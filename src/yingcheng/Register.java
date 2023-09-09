@@ -1,4 +1,7 @@
 package yingcheng;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import java.time.format.DateTimeFormatter;
@@ -13,9 +16,15 @@ public class Register extends Main {
     static String number;
     static int ID=1000;
     static Scanner scanner=new Scanner(System.in);
-
     public static void register(){
+        try {
+            fileWriter = new FileWriter("D:\\IntelliJ IDEA 2021.1.3\\yingcheng\\user.txt.txt",true);
+        } catch (IOException e) {
+            e.printStackTrace();
 
+        }
+
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
        boolean ru;
        do{
            System.out.println("请输入账号(不少于5个字符):");
@@ -49,19 +58,24 @@ number=scanner.nextLine();
         String userID = String.valueOf(ID);
        System.out.println("注册成功！");//用户ID、用户名、密码、用户邮箱，用户手机号，用户级别（金牌用户、银牌用户、铜牌用户）、
         // 用户注册时间、用户累计消费总金额、用户累计消费次数；
-        user.add(userID);
-        user.add(account);
-       user.add(password);
-       user.add(mailBox);
-        user.add(number);
-        user.add("铜牌用户");
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = currentDateTime.format(formatter);
-        user.add(formattedDateTime);
-        user.add(String.valueOf(0));
-        user.add(String.valueOf(0));
-         Main.main(null);
+        try {
+            bufferedWriter.write(userID + " ");
+            bufferedWriter.write(account + " ");
+            bufferedWriter.write(password + " ");
+            bufferedWriter.write(mailBox + " ");
+            bufferedWriter.write(number + " ");
+            bufferedWriter.write("铜牌用户" + " ");
+            bufferedWriter.write(formattedDateTime + " ");
+            bufferedWriter.write(String.valueOf(0) + " ");
+            bufferedWriter.write(String.valueOf(0));
+            bufferedWriter.flush();
+            Main.main(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

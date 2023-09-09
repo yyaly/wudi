@@ -6,7 +6,6 @@ public abstract class User extends Main {
     static Scanner scanner = new Scanner(System.in);
 
 public static boolean user(int ID){
-    boolean continueRun=true;
     System.out.println("欢迎，尊敬的顾客"+ID+"，您需要什么服务？");
     System.out.println("密码管理(1)");
     System.out.println("购票(2)");
@@ -14,10 +13,10 @@ public static boolean user(int ID){
     int service=scanner.nextInt();
     scanner.nextLine();
     if(service==1){
-        continueRun= password.password1(ID);
+         password.password1(ID);
         user(ID);
     }else if(service==2){
-          continueRun= buyTicket();
+        buyTicket(ID);
         user(ID);
 }
     else{
@@ -26,7 +25,7 @@ public static boolean user(int ID){
     return false;
 }
 
-    private static boolean buyTicket() {
+    private static boolean buyTicket(int id) {
         boolean continueRun=false;
         Ticket bookingSystem = new Ticket();
     do {
@@ -41,10 +40,14 @@ public static boolean user(int ID){
         scanner.nextLine();
         switch (service1) {
             case 1 -> continueRun = Movie.allList();
-            case 2 -> continueRun = bookingSystem.run();
+            case 2 ->{ System.out.print("请输入电影名：");
+                     String movieName = scanner.nextLine();
+                     System.out.print("请输入场次：");
+                     String showtime = scanner.nextLine();
+                     continueRun= bookingSystem.check(movieName,showtime);}
             case 3 -> continueRun = bookingSystem.buy();
             case 4 -> continueRun = bookingSystem.takeTicket();
-            case 5 -> continueRun = bookingSystem.buyTicketHistory();
+            case 5 -> continueRun = bookingSystem.buyTicketHistory(id);
             case 0 -> {
                 return true;
             }

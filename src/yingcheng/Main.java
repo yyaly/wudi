@@ -1,20 +1,55 @@
 package yingcheng;
 
-import java.util.ArrayList;
+import java.io.*;
 import java.util.Scanner;
 
 public class Main {
-    public static  ArrayList<String> insider=new ArrayList<>();
-    public static ArrayList<String> user=new ArrayList<>();
-    public static ArrayList<String> film=new ArrayList<>();
-    public static ArrayList<String > session=new ArrayList<>();
     static boolean time=false;
+    interface ways{
+        boolean buy();
+        void showtime();
+    }
+    static FileWriter fileWriter;
     public static void main(String[] args) {
-        if(!time) {
-            insider.add("1");insider.add("boss");insider.add("123456");insider.add("2023-08-26 15:30:45");insider.add("经理");insider.add("123456");insider.add("asdzxc");
-            insider.add("2");insider.add("reception");insider.add("456789");insider.add("2023-08-26 15:31:21");insider.add("前台");insider.add("456789");insider.add("qweasd");
-            insider.add("3");insider.add("admin");insider.add("ynuinfo#777");
-            time=true;
+        BufferedWriter bufferedWriter = null;
+        try {
+            fileWriter = new FileWriter("D:\\IntelliJ IDEA 2021.1.3\\yingcheng\\insider.txt.txt", true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("1" + " ");
+            bufferedWriter.write("boss" + " ");
+            bufferedWriter.write("123456" + " ");
+            bufferedWriter.write("2023-08-26 15:30:45" + " ");
+            bufferedWriter.write("经理" + " ");
+            bufferedWriter.write("1234560" + " ");
+            bufferedWriter.write("asdzxc" + " ");
+            bufferedWriter.newLine();
+            bufferedWriter.write("2" + " ");
+            bufferedWriter.write("reception" + " ");
+            bufferedWriter.write("456789" + " ");
+            bufferedWriter.write("2023-08-26 15:31:21" + " ");
+            bufferedWriter.write("前台" + " ");
+            bufferedWriter.write("4567890" + " ");
+            bufferedWriter.write("qweasd" + " ");
+            bufferedWriter.newLine();
+            bufferedWriter.write("3" + " ");
+            bufferedWriter.write("admin" + " ");
+            bufferedWriter.write("ynuinfo#777" + " ");
+
+            bufferedWriter.flush(); // 刷新缓冲区，将数据写入文件
+            time = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bufferedWriter != null) {
+                    bufferedWriter.close();
+                }
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         Scanner scanner = new Scanner(System.in);
         System.out.println("hello,欢迎进入东南亚皇家影院！");
@@ -31,4 +66,5 @@ public class Main {
             }
 
     }
+
 }

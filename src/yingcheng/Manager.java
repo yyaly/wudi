@@ -1,18 +1,21 @@
 package yingcheng;
-import java.util.Random;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Manager extends password {
     static Scanner scanner = new Scanner(System.in);
+    static String filePath = "D:\\IntelliJ IDEA 2021.1.3\\yingcheng\\insider.txt.txt";
     public static void manager() {
-boolean back=false;
         System.out.println("欢迎，尊敬的管理员，您需要什么服务？");
         System.out.println("密码管理(1)");
         System.out.println("内部人员管理(2)");
         System.out.println("退出(else)");
         int service=scanner.nextInt();
         if(service==1){
-            back= password.password1(3);
+             password.password1(3);
             manager();
         }else if(service==2){
             Manager.userManager();
@@ -37,34 +40,35 @@ boolean back=false;
         int gl=scanner.nextInt();
         scanner.nextLine();
         if(gl==1){
-            int size1=insider.size()-3;
             System.out.println("用户ID、用户名、用户注册时间、用户类型、用户手机号、用户邮箱:");
-            for(int y=0;y<size1;y++){
-                if(y==2||y==9){
-                    continue;
+            try {
+                FileReader fileReader = new FileReader("D:\\IntelliJ IDEA 2021.1.3\\yingcheng\\insider.txt.txt");
+            //创建 BufferedReader 对象
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String strLine = bufferedReader.readLine();
+                while (strLine != null){
+                    System.out.println(strLine);
+                    strLine = bufferedReader.readLine();
                 }
-               else{
-                   System.out.print(insider.get(y)+" ");
-                if(y==6){
-                    System.out.println();
-                }}
-            }
+                bufferedReader.close();
+                fileReader.close();
+            }catch (IOException e){
+            System.out.println("文件不存在");
+                  }
             System.out.println();
             Manager.userManager();
         }else if(gl==2){
            do{ System.out.println("请输入要删除用户信息的id");
             String ID=scanner.nextLine();
-            int location=insider.indexOf(ID);
-            if(location==-1){
+            int location= Integer.parseInt(ID);
+            if(location!=1&&location!=2){
                 System.out.println("找不到该用户，请重新输入");
                 find=false;
             }else{
                 System.out.println("是否确认删除(y/n)");
                 String affirm=scanner.nextLine();
                 if(affirm.equals("y")){
-                    for (int i =0;i<7 ; i++) {
-                         insider.remove(location);
-                    }
+                    fileOperation1(location, filePath);
 
                     System.out.println("删除完毕");
                 }
@@ -74,38 +78,29 @@ boolean back=false;
         }else if(gl==3) {
             System.out.println("您选择什么进行查询(1用户ID,2用户名)");
             int way = scanner.nextInt();
+            scanner.nextLine();
             if (way == 1) {
                 do {
                     System.out.println("请输入要查询的用户id");
                     String ID = scanner.nextLine();
-                    int location1 = insider.indexOf(ID);
-                    if (location1 == -1) {
+                    int location1 = Integer.parseInt(ID);
+                    if (location1!=1&&location1!=2) {
                         System.out.println("找不到该用户，请重新输入");
                         find = false;
                     } else {
-                        for (int i = location1; i < location1 + 7; i++) {
-                            System.out.print(insider.get(i));
-                        }
-
-                        System.out.println("查询完毕");
-                        Manager.userManager();
+                        fileOperation2(location1);
                     }
                 } while (!find);
             } else if (way == 2) {
                 do {
                     System.out.println("请输入要查询的用户名");
                     String ID1 = scanner.nextLine();
-                    int location2 = insider.indexOf(ID1);
+                    int location2 =Login.check(ID1);
                     if (location2 == -1) {
                         System.out.println("找不到该用户，请重新输入");
                         find = false;
                     } else {
-                        for (int i = location2 - 1; i < location2 + 6; i++) {
-                            System.out.print(insider.get(i));
-                        }
-
-                        System.out.println("查询完毕");
-                        Manager.userManager();
+                        fileOperation2(location2);
                     }
                 }while (!find) ;
             }
@@ -114,21 +109,47 @@ add();
         }else if(gl==5){
 System.out.println("请输入要修改用户的ID");
 String id=scanner.nextLine();
-int location=insider.indexOf(id);
+int location= Integer.parseInt(id);
         System.out.println("请输入要修改的部分，用户类型(1)、用户手机号(2)、用户邮箱(3)，用户名(4)");
         int part=scanner.nextInt();
             scanner.nextLine();
+            int location1=0;
         System.out.println("请输入修改内容");
         String content=scanner.nextLine();
         if(part==1){
-            insider.set(location+4,content);
+           location1=4;
         }else if(part==2){
-            insider.set(location+5,content);
+            location1=5;
             }else if(part==3){
-            insider.set(location+6,content);
+            location1=6;
         }else if(part==4){
-            insider.set(location+1,content);
+           location1=1;
         }
+            List<String> fileContent = new ArrayList<>();
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                int currentLineNumber = 1;
+                while ((line = br.readLine()) != null) {
+                    if (currentLineNumber == location) {
+                        String[] words = line.split("\\s+");
+                        words[location1] = content;
+                        line = String.join(" ", words);
+                    }
+                    fileContent.add(line);
+                    currentLineNumber++;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+                for (String line : fileContent) {
+                    bw.write(line);
+                    bw.newLine();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         System.out.println("修改完成");
            Manager.userManager();
         }else{
@@ -137,67 +158,124 @@ int location=insider.indexOf(id);
 
 }
 
-    private static void add() {
-
-        System.out.println("请输入增加用户Id");
-        String content=scanner.nextLine();
-        insider.add(content);
-        if(inspect(content)){
-            int length=insider.size();
-            insider.remove(length-1);
-            System.out.println("有重复，请重新输入");
-            add();
-        }
-        System.out.println("请输入增加用户名");
-        String content1=scanner.nextLine();
-        insider.add(content1);
-        if(inspect(content1)){
-            int length=insider.size();
-            insider.remove(length-1);
-            System.out.println("有重复，请重新输入");
-            add();
-        }
-        Random random = new Random();
-        int min = 100000;
-        int max = 999999;
-        insider.add(String.valueOf(random.nextInt(max - min + 1) + min));
-        System.out.println("请输入增加用户注册时间");
-        String content2=scanner.nextLine();
-        insider.add(content2);
-        System.out.println("请输入增加用户类型");
-        String content3=scanner.nextLine();
-        insider.add(content3);
-        System.out.println("请输入增加用户手机号");
-        String content4=scanner.nextLine();
-        insider.add(content4);
-        if(inspect(content4)){
-            int length=insider.size();
-            insider.remove(length-1);
-            System.out.println("有重复，请重新输入");
-            add();
-        }
-        System.out.println("请输入增加用户邮箱");
-        String content5=scanner.nextLine();
-        insider.add(content5);
-        if(inspect(content5)){
-            int length=insider.size();
-            insider.remove(length-1);
-            System.out.println("有重复，请重新输入");
-            add();
-        }
-        System.out.println("增加成功");
+    private static void fileOperation2(int location1) {
+        fileOperation3(location1, filePath);
         Manager.userManager();
     }
 
-    private static boolean inspect(String content) {
-        for (String s : insider) {
-            if (s.equals(content)) {
-                return true;
-
+    static void fileOperation3(int location1, String filePath) {//查询
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int currentLineNumber = 1;
+            while ((line = br.readLine()) != null) {
+                if (currentLineNumber == location1) {
+                    System.out.println(line);
+                    break;
+                }
+                currentLineNumber++;
             }
-            break;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return false;
+        System.out.println("查询完毕");
+    }
+
+    static void fileOperation1(int location, String filePath) {//删除
+        List<String> fileContent = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int currentLineNumber = 1;
+            while ((line = br.readLine()) != null) {
+                if (currentLineNumber !=location) {
+                    fileContent.add(line);
+                }
+                currentLineNumber++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            for (String line : fileContent) {
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private static void add() {
+        try {
+            fileWriter = new FileWriter("D:\\IntelliJ IDEA 2021.1.3\\yingcheng\\insider.txt.txt",true);
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        try {
+            bufferedWriter.newLine();
+            String content;
+        System.out.println("请输入增加用户Id");
+        content=scanner.nextLine();
+            bufferedWriter.write(content+ " ");
+            repetition(content);
+        System.out.println("请输入增加用户名");
+            content=scanner.nextLine();
+            bufferedWriter.write(content+ " ");
+            repetition(content);
+            bufferedWriter.write("123456789"+ " ");
+        System.out.println("请输入增加用户注册时间");
+            bufferedWriter.write(scanner.nextLine()+ " ");
+        System.out.println("请输入增加用户类型");
+            bufferedWriter.write(scanner.nextLine()+ " ");
+        System.out.println("请输入增加用户手机号");
+            content=scanner.nextLine();
+            bufferedWriter.write(content+ " ");
+            repetition(content);
+        System.out.println("请输入增加用户邮箱");
+            content=scanner.nextLine();
+            bufferedWriter.write(content+ " ");
+            repetition(content);
+        System.out.println("增加成功");
+            bufferedWriter.flush();
+        Manager.userManager();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void repetition(String targetString) {
+        List<String> fileContent = new ArrayList<>();
+        boolean duplicateFound = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.equals(targetString)) {
+                    duplicateFound = true;
+                }
+                fileContent.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (duplicateFound) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+                for (int i = 0; i < fileContent.size() - 1; i++) {
+                    bw.write(fileContent.get(i));
+                    bw.newLine();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("发现重复");
+            add();
+        }
     }
 
 }

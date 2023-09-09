@@ -1,5 +1,8 @@
 package yingcheng;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Boss extends Main{
@@ -83,33 +86,56 @@ return hui;
         System.out.println("请选择你的服务：列出所有用户信息(1),查询用户信息(2),退出(else)");
         int service=scanner.nextInt();
         if(service==1){
-            for (String s : user) {
-                System.out.print(s);
+            try {
+
+                FileReader fileReader = new FileReader("\"D:\\IntelliJ IDEA 2021.1.3\\yingcheng\\user.txt.txt\"");
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String strLine = bufferedReader.readLine();
+                while (strLine != null){
+                    System.out.println(strLine);
+                    strLine = bufferedReader.readLine();
+                }
+                bufferedReader.close();
+                fileReader.close();
+            }catch (IOException e){
+                System.out.println("没有用户信息");
             }
+
             System.out.println();
              Boss.boss();
         }else if(service==2){
             System.out.println("您要以什么来查询，用户ID(1),用户名(2)");
             int way=scanner.nextInt();
+            String id = null;
             switch (way) {
                 case 1 -> {
                     System.out.println("请输入用户ID");
-                    String id = scanner.nextLine();
-                    int location = user.indexOf(id);
-                    for (int i = location; i < location + 8; i++) {
-                        System.out.println(user.get(i));
-                    }
+                    id = scanner.nextLine();
+
                 }
                 case 2 -> {
                     System.out.println("请输入用户名");
-                    String name = scanner.nextLine();
-                    int location1 = user.indexOf(name);
-                    for (int i = location1 - 1; i < location1 + 7; i++) {
-                        System.out.println(user.get(i));
-                    }
+                  id = scanner.nextLine();
+
                 }
             }
+            int location1=Login.check1(id);
+            try (BufferedReader br = new BufferedReader(new FileReader("\"D:\\IntelliJ IDEA 2021.1.3\\yingcheng\\user.txt.txt\""))) {
+                String line;
+                int currentLineNumber = 1;
+                while ((line = br.readLine()) != null) {
+                    if (currentLineNumber == location1) {
+                        System.out.println(line);
+                        break;
+                    }
+                    currentLineNumber++;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("查询完毕");
            Boss.boss();
+
         }else{
             Boss.boss();
         }

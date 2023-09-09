@@ -13,14 +13,19 @@ public abstract class Reception extends Boss {
         System.out.println("售票(4)");
         System.out.println("退出(else)");
         int way=scanner.nextInt();
+        scanner.nextLine();
         if(way==1){
            back= Movie.allList();
         }else if(way==2){
             back= Movie.listSession();
         }else if(way==3){
-            back= bookingSystem.run();
+            System.out.print("请输入电影名：");
+            String movieName = scanner.nextLine();
+            System.out.print("请输入场次：");
+            String showtime = scanner.nextLine();
+            bookingSystem.check(movieName,showtime);
         }else if(way==4){
-            back=bookingSystem.buy();
+            bookingSystem.buy();
         }
         else{
             Main.main(null);
