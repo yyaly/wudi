@@ -17,7 +17,7 @@ public class Main {
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write("1" + " ");
             bufferedWriter.write("boss" + " ");
-            bufferedWriter.write("123456" + " ");
+            bufferedWriter.write(Quit.passwordChange("123456") + " ");
             bufferedWriter.write("2023-08-26 15:30:45" + " ");
             bufferedWriter.write("经理" + " ");
             bufferedWriter.write("1234560" + " ");
@@ -25,7 +25,7 @@ public class Main {
             bufferedWriter.newLine();
             bufferedWriter.write("2" + " ");
             bufferedWriter.write("reception" + " ");
-            bufferedWriter.write("456789" + " ");
+            bufferedWriter.write(Quit.passwordChange("456789") + " ");
             bufferedWriter.write("2023-08-26 15:31:21" + " ");
             bufferedWriter.write("前台" + " ");
             bufferedWriter.write("4567890" + " ");
@@ -33,11 +33,11 @@ public class Main {
             bufferedWriter.newLine();
             bufferedWriter.write("3" + " ");
             bufferedWriter.write("admin" + " ");
-            bufferedWriter.write("ynuinfo#777" + " ");
+            bufferedWriter.write(Quit.passwordChange("ynuinfo#777") + " ");
 
             bufferedWriter.flush(); // 刷新缓冲区，将数据写入文件
             time = true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {

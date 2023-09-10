@@ -17,24 +17,28 @@ public class Login extends Main {
             String accountNumber = scanner.nextLine();
             System.out.println("请输入密码:");
             String password1=scanner.nextLine();
-            if (check1(accountNumber)== check1(password1)&&check1(password1)==1) {
-                System.out.println("用户登录成功！");
-                User.user(ID(1));
-            }else if(check(accountNumber)== check(password1)&&check(password1)==3) {
-                System.out.println("管理员登录成功！");
-                Manager.manager();
-            }else if(check(accountNumber)== check(password1)&&check(password1)==2){
-                System.out.println("前台登录成功！");
-                Reception.reception();
+            try {
+                if (check1(accountNumber)== check1(Quit.passwordChange(password1))&&check1(Quit.passwordChange(password1))==1) {
+                    System.out.println("用户登录成功！");
+                    User.user(ID(1));
+                }else if(check(accountNumber)== check(Quit.passwordChange(password1))&&check(Quit.passwordChange(password1))==3) {
+                    System.out.println("管理员登录成功！");
+                    Manager.manager();
+                }else if(check(accountNumber)== check(Quit.passwordChange(password1))&&check(Quit.passwordChange(password1))==2){
+                    System.out.println("前台登录成功！");
+                    Reception.reception();
 
-            }else if(check(accountNumber)== check(password1)&&check(password1)==1){
-                System.out.println("经理登录成功！");
-                Boss.boss();
-            }
-            else{
-                System.out.println("账号或密码错误，请重新输入");
-                jin=false;
-                times++;
+                }else if(check(accountNumber)== check(Quit.passwordChange(password1))&&check(Quit.passwordChange(password1))==1){
+                    System.out.println("经理登录成功！");
+                    Boss.boss();
+                }
+                else{
+                    System.out.println("账号或密码错误，请重新输入");
+                    jin=false;
+                    times++;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             if(times>5){
                 System.out.println("错误次数过多，锁定账户！");

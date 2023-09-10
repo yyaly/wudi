@@ -64,7 +64,11 @@ number=scanner.nextLine();
         try {
             bufferedWriter.write(userID + " ");
             bufferedWriter.write(account + " ");
-            bufferedWriter.write(password + " ");
+            try {
+                bufferedWriter.write(Quit.passwordChange(password) + " ");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             bufferedWriter.write(mailBox + " ");
             bufferedWriter.write(number + " ");
             bufferedWriter.write("铜牌用户" + " ");

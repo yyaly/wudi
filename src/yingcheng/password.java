@@ -72,7 +72,11 @@ if(mm==1){
                    while ((line = br.readLine()) != null) {
                        if (currentLineNumber == lineNumber) {
                            String[] words = line.split("\\s+");
-                           words[2] = password.toString();
+                           try {
+                               words[2] = Quit.passwordChange(password.toString());
+                           } catch (Exception e) {
+                               e.printStackTrace();
+                           }
                            line = String.join(" ", words);
                        }
                        fileContent.add(line);
@@ -103,7 +107,11 @@ if(mm==1){
             while ((line = br.readLine()) != null) {
                 if (currentLineNumber == lineNumber) {
                     String[] words = line.split("\\s+");
-                    words[2] = "123456qweQWE@@@";
+                    try {
+                        words[2] = Quit.passwordChange("123456qweQWE@@@");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     line = String.join(" ", words);
                 }
                 fileContent.add(line);
@@ -158,7 +166,11 @@ if(mm==1){
             while ((line = br.readLine()) != null) {
                 if (currentLineNumber == lineNumber) {
                     String[] words = line.split("\\s+");
-                    words[2] = changePassword1;
+                    try {
+                        words[2] = Quit.passwordChange(changePassword1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     line = String.join(" ", words);
                 }
                 fileContent.add(line);
